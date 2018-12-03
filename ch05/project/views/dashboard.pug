@@ -1,0 +1,32 @@
+doctype html
+html
+  head
+    script(src='main.js')
+    link(rel='stylesheet', href='style.css')
+  body
+    h1 weather station
+    div(id="dashboard-sections-container")
+      div(id="sensors")
+        table
+          caption sensor data
+          tr
+            th name
+            th time
+            th reading
+            th units     
+          each sensor in sensors
+            tr(class="sensor" id=sensor.name)
+              td= sensor.name
+              td(class="time") 
+              td(class="last-read")
+              td= sensor.units
+      div(id="fans")
+        table
+          caption fans
+            tr
+              th name
+              th state
+            each fan in fans
+              tr(class="fan" id=fan.name)
+                td= fan.name
+                td(class="state")

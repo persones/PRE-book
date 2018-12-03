@@ -1,0 +1,66 @@
+@media (-webkit-min-device-pixel-ratio: 1.1) {
+  body {
+    font-size: 2em;
+  }
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%; 
+}
+
+h1 {
+  text-align: center;
+}
+
+table {
+  margin: 1em;
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+caption {
+  font-size: 1.5em;
+}
+
+th { 
+  background-color: lightblue;
+}
+
+#dashboard-sections-container {
+  display: flex;
+  flex-direction: row; 
+  flex-wrap: wrap;
+}
+
+#dashboard-sections-container > div {
+  width: 30em;
+}
+
+.sensor .last-read {
+  font-family: 'Courier New', Courier, monospace;
+  text-align: right;
+}
+
+.fan.on .state {
+  background-color: lightgreen;
+}
+
+.fan.on .state::before {
+  content: "on";
+}
+
+.fan.off .state {
+  background-color:  lightcoral;
+}
+
+.fan.off .state::before {
+  content: "off";
+}
+
+
+
