@@ -9,8 +9,39 @@
   <script src="main.js"></script>
 </head>
 <body>
-  <div>one</div>  
-  <div>two</div>  
-  <div>three</div>  
+  <style>
+    .flex-row-container {
+      border: 1px solid black;
+      display: flex;
+      flex-direction: row;
+      justify-content:space-evenly;
+      flex-wrap: wrap;
+      margin: 1em;
+    }
+
+    .flex-row-container div {
+      border: 1px solid black;
+      width: 5em;
+      margin: 1em;
+    }
+  </style>
+  <pre>
+  flex-direction: row;
+  justify-content:space-evenly;
+  flex-wrap: wrap;
+</pre>
+  <div class="flex-row-container">
+    <div>one</div>  
+    <div>two</div>  
+    <div>three</div>  
+    <div>four</div>  
+  </div>
+
+  <div class="flex-row-container" style="width: 50%;">
+      <div>one</div>  
+      <div>two</div>  
+      <div>three</div>  
+      <div>four</div>  
+    </div>
 </body>
 </html>

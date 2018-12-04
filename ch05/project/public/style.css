@@ -35,10 +35,7 @@ th {
   display: flex;
   flex-direction: row; 
   flex-wrap: wrap;
-}
-
-#dashboard-sections-container > div {
-  width: 30em;
+  justify-content: space-evenly;
 }
 
 .sensor .last-read {
