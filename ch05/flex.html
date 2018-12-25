@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Page Title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+  <script src="main.js"></script>
+</head>
+
+<body>
+  <style>
+
+    .one {
+      width: 3em;
+    }
+    .one::before, .two::before, .three::before, .four::before {
+      content: attr(class);
+    };
+
+    .two {
+      width: 5em;
+    }
+    .three {
+      width: 2em;
+    }
+    .four {
+      width: 5em;
+    }
+    .flex-row-container1 {
+      border: 1px solid black;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      flex-wrap: wrap;
+      margin: 1em;
+    }
+
+    .flex-row-container1 div {
+      border: 1px solid black;
+      margin: 1em;
+    }
+
+    .flex-row-container2 {
+      border: 1px solid black;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      margin: 1em;
+    }
+
+    .flex-row-container2 div {
+      border: 1px solid black;
+      margin: 1em;
+    }
+  </style>
+  <pre>
+  .flex-row-container {
+    flex-direction: row;
+    justify-content:space-evenly;
+    flex-wrap: wrap;
+  }
+  </pre>
+  <div class="flex-row-container1">
+    <div class="one"></div>
+    <div class="two"></div>
+    <div class="three"></div>
+    <div class="four"></div>
+  </div>
+
+  <div class="flex-row-container1" style="width: 50%;">
+    <div class="one"></div>
+    <div class="two"></div>
+    <div class="three"></div>
+    <div class="four"></div>
+  </div>
+
+  <pre>
+  .flex-row-container {
+    flex-direction: row;
+    justify-content: 
+    flex-wrap: wrap;
+  }
+  </pre>
+  <div class="flex-row-container2">
+    <div class="one"></div>
+    <div class="two"></div>
+    <div class="three"></div>
+    <div class="four"></div>
+  </div>
+
+</body>
+</html>
+
