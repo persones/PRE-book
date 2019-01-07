@@ -13,83 +13,120 @@
 <body>
   <style>
 
-    .one {
-      width: 3em;
+    .flex_parent > div:nth-child(1) {
+      width: 5.5em;
+      height: 2em;
     }
-    .one::before, .two::before, .three::before, .four::before {
-      content: attr(class);
-    };
 
-    .two {
+    .flex_parent > div:nth-child(2) {
+      width: 7em;
+      height: 1em;
+    }
+    .flex_parent > div:nth-child(3) {
+      width: 3.5em;
+      height: 3em;
+    }
+    .flex_parent > div:nth-child(4) {
       width: 5em;
+      height: 1.5em;
     }
-    .three {
-      width: 2em;
+
+    pre {
+      margin: 0;
     }
-    .four {
-      width: 5em;
-    }
-    .flex-row-container1 {
-      border: 1px solid black;
+
+    .flex_parent {
+      border: 1px black dashed;
       display: flex;
       flex-direction: row;
       justify-content: space-evenly;
-      flex-wrap: wrap;
-      margin: 1em;
+      margin-bottom: 1em;
+      background-color: #E0E0E0;
     }
 
-    .flex-row-container1 div {
+    .flex_parent > div {
       border: 1px solid black;
-      margin: 1em;
+      counter-increment: childCount;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #FFFFFF;
     }
 
-    .flex-row-container2 {
-      border: 1px solid black;
+    .flex_parent > div::before {
+      content: "child-"  counter(childCount)
+    }
+  
+    #two-columns {
       display: flex;
       flex-direction: row;
-      justify-content: space-around;
-      margin: 1em;
+      justify-content: space-between
     }
 
-    .flex-row-container2 div {
-      border: 1px solid black;
-      margin: 1em;
+    #two-columns > div {
+      width: 45%;
+    }
+
+    #two-columns .flex_parent {
+      height: 200px;
     }
   </style>
   <pre>
-  .flex-row-container {
-    flex-direction: row;
-    justify-content:space-evenly;
-    flex-wrap: wrap;
-  }
+display: flex;
+flex-direction: row;
+justify-content:space-evenly;
   </pre>
-  <div class="flex-row-container1">
-    <div class="one"></div>
-    <div class="two"></div>
-    <div class="three"></div>
-    <div class="four"></div>
+  <div class="flex_parent">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
   </div>
-
-  <div class="flex-row-container1" style="width: 50%;">
-    <div class="one"></div>
-    <div class="two"></div>
-    <div class="three"></div>
-    <div class="four"></div>
-  </div>
-
   <pre>
-  .flex-row-container {
-    flex-direction: row;
-    justify-content: 
-    flex-wrap: wrap;
-  }
+justify-content: center;
   </pre>
-  <div class="flex-row-container2">
-    <div class="one"></div>
-    <div class="two"></div>
-    <div class="three"></div>
-    <div class="four"></div>
+  <div class="flex_parent" style="justify-content: center"">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
   </div>
-
+  <pre>
+align-items: center;
+  </pre>
+  <div class="flex_parent" style="align-items: center;">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <div id="two-columns">
+    <div>
+        <pre>
+flex-direction: row; 
+flex-wrap: wrap; 
+align-content: space-between;
+        </pre>
+      <div class="flex_parent" style="flex-direction: row; flex-wrap: wrap; align-content: space-between">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+    <div>
+      <pre>
+flex-direction: column; 
+align-items: center; 
+justify-content: space-between;
+      </pre>           
+      <div class="flex_parent" style="flex-direction: column; align-items: center; justify-content: space-between;">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
