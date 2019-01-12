@@ -10,8 +10,14 @@ html {
   -ms-text-size-adjust: 100%; 
 }
 
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
 h1 {
   text-align: center;
+  text-transform: capitalize;
+  font-family: 'Merriweather', serif;
 }
 
 table {
@@ -23,12 +29,25 @@ table, th, td {
   border-collapse: collapse;
 }
 
+th {
+  text-transform: capitalize;
+}
+
+
 caption {
-  font-size: 1.5em;
+  font-size: 1.3em;
+  text-transform: uppercase;
+  margin-bottom: 0.2em;
 }
 
 th { 
   background-color: lightblue;
+  padding: 0.25em;
+}
+
+td {
+  font-family: 'Courier New', Courier, monospace;
+  padding: 0.25em;
 }
 
 #dashboard-sections-container {
@@ -39,7 +58,6 @@ th {
 }
 
 .sensor .last-read {
-  font-family: 'Courier New', Courier, monospace;
   text-align: right;
 }
 
