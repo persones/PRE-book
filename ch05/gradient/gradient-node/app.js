@@ -1,11 +1,24 @@
+console.log("app started")
+
 var express = require('express')
 var app = express();
+console.log("experess started")
 
 const SerialPort = require('serialport')
 const Readline = require('@serialport/parser-readline')
-const port = new SerialPort('COM3', {
+const port = new SerialPort('/dev/tty.usbmodem141131', {
   baudRate: 56700   
-})
+}, function (err) {
+  if (err) {
+    return console.log('Error: ', err.message)
+  }
+});
+
+port.on('error', function(err) {
+  console.log('ERROR: ', err.message)
+});
+
+console.log("serial started")
 
 app.use(express.static('public'))
 app.listen(3000, function () {
@@ -26,11 +39,11 @@ let colorArray = [];
 //  colorArray[line.charCodeAt(0) - 128] = '#' + line.slice(1).padStart(7,'0');
 //})
 
-let inBuffer = Buffer.alloc(7);
-let 
-bufIndex = 999;
+//let inBuffer = Buffer.alloc(7);
+//let bufIndex = 999;
 
-port.on('data', data => {
+/*port.on('data', data => {
+  console.log("data in");
   for (b of data) {
     if (b > 127) {
       bufIndex = 0;
@@ -42,11 +55,11 @@ port.on('data', data => {
   }
   
 });
+*/
+//let buf = Buffer.alloc(7);
 
-let buf = Buffer.alloc(7);
 
-
-function setLed(n, channelArray) {
+/*function setLed(n, channelArray) {
 
   let i = 0;
   buf[i++]= (n + 128);
@@ -57,7 +70,7 @@ function setLed(n, channelArray) {
   port.write(buf);
   //console.log(buf);
 }
-
+*/
 /*
 let colorList = [
   [0, 255, 0],
