@@ -1,30 +1,25 @@
 import argparse
-#parser = argparse.ArgumentParser(description="Weather station")
+import yaml
 
-#parser.add_argument('--fan-pin', nargs=2)
-#parser.add_argument('--conf-file', nargs='?', 
-#  default='conf.yml')
-#parser.add_argument(['-v', '--verbose'],
-#  action="store_true", default=False)
-
-#args = parser.parse_args()
-
-
-#parser = argparse.ArgumentParser()
 parser = argparse.ArgumentParser(description="Weather station")
 parser.add_argument('--interval', type=int)
 parser.add_argument('--fan-pin', nargs=2, action="append")
 parser.add_argument('--conf-file', nargs='?', 
-  default='conf.yml')
+  default='config.yaml')
 parser.add_argument('-v', '--verbose',
   action="store_true", default=False)
 args = parser.parse_args()
-print(args)
-#print(str(args.interval+1))
-print('Verbose mode: {}'.format(args.verbose))
+
+print('configuration file: {}'.format(args.conf_file))
+with open(args.conf_file, 'r') as f:
+  config = yaml.load(f)
+
 if args.fan_pin:
   for fan_option in args.fan_pin:
-    print('fan {} is using pin {}'.format(*fan_option))
-print('configuration file: {}'.format(args.conf_file))
+    print('overriding fan {} is using pin {}'.format(*fan_option))
+    config.
+
+print('Verbose mode: {}'.format(args.verbose))
+
 
 print(args.interval or 3)
