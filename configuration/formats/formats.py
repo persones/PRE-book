@@ -1,3 +1,7 @@
 import yaml
 
-print yaml.dump(yaml.load(document))
+with open('config.yaml', 'r') as f:
+  config = yaml.load(f)
+print(config)
+
+
