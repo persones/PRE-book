@@ -1,3 +1,3 @@
 import yaml
 
-print yaml.dump(yaml.load(document))
+print(yaml.dump(yaml.load('config.yaml'));

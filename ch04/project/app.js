@@ -130,18 +130,18 @@ wss.on('connection', function connection(ws) {
 });
 
 
-var sensorList = [];
-var fanList = [];
-var threshold  = 22.225;
-sensorList.push(new Si7021Temp("Si7021Temp", 1));
-sensorList.push(new MPL3115A2Temp("MPL3115A2Temp", 1));
-fanList.push(new Fan("left", 20));
-fanList.push(new Fan("right", 21));
+  var sensorList = [];
+  var fanList = [];
+  var threshold  = 22.225;
+  sensorList.push(new Si7021Temp("Si7021Temp", 1));
+  sensorList.push(new MPL3115A2Temp("MPL3115A2Temp", 1));
+  fanList.push(new Fan("left", 20));
+  fanList.push(new Fan("right", 21));
 
-setInterval(() => {
-  fanList[0].set(sensorList[0].lastRead > threshold);
-  fanList[1].set(sensorList[1].lastRead > threshold);
-}, 1000);
+  setInterval(() => {
+    fanList[0].set(sensorList[0].lastRead > threshold);
+    fanList[1].set(sensorList[1].lastRead > threshold);
+  }, 1000);
 
 setInterval(() => {
   for (s of sensorList) {
