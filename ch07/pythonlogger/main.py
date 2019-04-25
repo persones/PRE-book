@@ -14,8 +14,31 @@ with open("config.yaml", 'r') as stream:
     config = yaml.load(stream, Loader=yaml.Loader)
 
 test_logger = logging.getLogger('test')
-file_handler = logging.handlers.WatchedFileHandler(config['logging']['file'])
-test_logger.addHandler(file_handler)
+#file_handler = logging.handlers.WatchedFileHandler(config['logging']['file'])
+rot_handler = logging.handlers.RotatingFileHandler(
+  'logs/out.log', backupCount=7, maxBytes=100)
+#test_logger.addHandler(file_handler)
+test_logger.addHandler(rot_handler)
+
+# Mail Handler
+mailhost = ('smtp.gmail.com', 587)
+fromaddr = 'erddap-reports@exploratorium.edu'
+toaddrs = 'eyal.person.shahar@gmail.com'
+subject = 'alert!'
+credentials = ('erddap-reports@exploratorium.edu', 'wiredpier')
+
+mail_handler = logging.handlers.SMTPHandler(
+  mailhost, 
+  fromaddr, 
+  toaddrs, 
+  subject, 
+  credentials=credentials, 
+  secure=(), 
+  timeout=1.0
+  )
+
+test_logger.addHandler(mail_handler)
+
 
 print(args)
 if args.verbose:
@@ -24,6 +47,7 @@ if args.verbose:
   test_logger.addHandler(verbose_handler)
 
 test_logger.setLevel(config['logging']['level'])
+
 
 test_logger.debug('Debug message')
 test_logger.info('Info message')
