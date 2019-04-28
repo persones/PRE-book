@@ -11,10 +11,12 @@ formatter = logging.Formatter(
   )
 handler = logging.handlers.WatchedFileHandler('/var/log/weather/fans.log')
 handler.setFormatter(formatter)
+
 logger = logging.getLogger('app').getChild('fans')
 logger.addHandler(handler)
 
 logger.propagate = False
+
 
 class Fans:
   def __init__(self):
