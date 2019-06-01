@@ -1,6 +1,18 @@
-var express = require('express')
-var app = express();
-var gpio = require('rpi-gpio');
+const fs = require('fs');
+const path = require('path');
+const yaml = require('js-yaml');
+const express = require('express')
+const app = express();
+const gpio = require('rpi-gpio');
+
+const fileName = path.join(__dirname, 'config.yaml');
+try {
+  var fileContent = fs.readFileSync(fileName, 'utf8');  
+} catch (err) {
+  console.error(err);
+}
+var config = yaml.load(fileContent);  
+
 gpio.setMode(gpio.MODE_BCM);
 
 
@@ -12,14 +24,15 @@ app.get('/', (request, response) => {
 });
   
 app.listen(3000, function () {
-  console.log('Example app listening on port 3000!')
+  console.log('Listening on port 3000')
 });
 
 const i2c = require("i2c-bus");
 
 class Sensor {
-  constructor(name) {
-    this.name = name;
+  constructor(cfg) {
+    this.name = cfg.name;
+    this.units = cfg.units;
     this.lastRead = -999;
   }
 
@@ -42,17 +55,16 @@ class Sensor {
 }
 
 class Si7021Temp extends Sensor {
-  constructor(name, busId) {
-    super(name);
-    this.units = "deg C";
-    this.busId = busId;
-    this.i2cBus = i2c.openSync(busId);
+  constructor(cfg) {
+    super(cfg);
+    this.busId = cfg.i2cbus;
+    this.i2cBus = i2c.openSync(this.busId)
   }
 
-  read() {
+  measure() {
     this.i2cBus.writeByte(0x40, 0xF3, 0, (err) => {
+      console.log('write err: ', err);
       if(err) {
-        console.log(err);
         this.lastRead = -999;
         return;
       }
@@ -72,14 +84,13 @@ class Si7021Temp extends Sensor {
 }
 
 class MPL3115A2Temp extends Sensor {
-  constructor(name, busId) {
-    super(name);
-    this.units = "deg C";
-    this.busId = busId;
-    this.i2cBus = i2c.openSync(busId);
+  constructor(cfg) {
+    super(cfg);
+    this.busId = parseInt(cfg.i2cbus);
+    this.i2cBus = i2c.openSync(this.busId);
   }
 
-  read() {
+  measure() {
     this.i2cBus.writeByteSync(0x60, 0x26, 0xB9);
     this.i2cBus.writeByteSync(0x60, 0x13, 0x07);
     this.i2cBus.writeByte(0x60, 0x26, 0xB9, (err) => {
@@ -91,6 +102,24 @@ class MPL3115A2Temp extends Sensor {
         this.time = new Date();
       }, 1000);
     })
+  }
+}
+
+class FakeTemp extends Sensor {
+  constructor(cfg) {
+    super(cfg);
+    this.isFake = true;
+    this.setTemp(cfg.temp);
+  }
+
+  measure() {}
+
+  setTemp(val) {
+    this.lastRead = val;
+    this.time = new Date();
+    wss.broadcast(JSON.stringify({
+      sensors: [this]
+    }));
   }
 }
 
@@ -125,7 +154,16 @@ wss.broadcast = function(data) {
 wss.on('connection', function connection(ws) {
   wss.broadcast(JSON.stringify({sensors: sensorList}));
   ws.on('message', function incoming(data) {
-    //
+    msg = JSON.parse(data);
+    if ('fake' in msg) {
+      console.log(msg);
+      for (sensor of sensorList) {
+        console.log(msg.fake.sensor, sensor)
+        if (msg.fake.sensor == sensor.name) {
+          sensor.setTemp(msg.fake.value);
+        }
+      }
+    }
   });
 });
 
@@ -133,8 +171,33 @@ wss.on('connection', function connection(ws) {
 var sensorList = [];
 var fanList = [];
 var threshold  = 22.225;
-sensorList.push(new Si7021Temp("Si7021Temp", 1));
-sensorList.push(new MPL3115A2Temp("MPL3115A2Temp", 1));
+
+var sensorList = [];
+let newSensor;
+let DEFAULT_TEMP = 24;
+
+for (let sensorCfg of config.sensors) {
+  switch (sensorCfg.type) {
+    case 'Si7021Temp':
+      newSensor = new Si7021Temp(sensorCfg);
+      break; 
+    case 'MPL3115A2Temp':
+      newSensor = new MPL3115A2Temp(sensorCfg);
+      break; 
+    case 'FakeTemp':
+      newSensor =new FakeTemp(sensorCfg);
+      break; 
+    }
+  console.log(newSensor);
+   /*(err) {
+    console.error(err);
+    sensorCfg.type = "FakeTemp";
+    sensorCfg.temp = DEFAULT_TEMP;
+    new FakeTemp(sensorCfg);
+  }*/
+  sensorList.push(newSensor); 
+}
+
 fanList.push(new Fan("left", 20));
 fanList.push(new Fan("right", 21));
 
@@ -145,7 +208,7 @@ setInterval(() => {
 
 setInterval(() => {
   for (s of sensorList) {
-    s.read()  
+    s.measure()  
     wss.broadcast(JSON.stringify({
       sensors: [s]
     }));
