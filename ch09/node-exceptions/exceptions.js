@@ -34,6 +34,15 @@ function simpleTryCatch() {
   }
 }
 
+function typeExample() {
+  try {
+    v1[
+  } catch () {
+
+  }
+
+}
+
 function httpExample() {
   const https = require('https');
   //https.get('https://a1pi.nasa.gov/planetary/apod?api_key=DEMO_KEY', (resp) => {

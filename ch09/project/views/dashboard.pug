@@ -34,9 +34,15 @@ html
                 td= fan.name
                 td(class="state")
       div(id="fakes")
-        h2 fake 
+        h2 fakess
         each sensor in sensors
           if sensor.isFake
             label(for=sensor.name)= sensor.name 
-            input(type="range" name=sensor.name  min="0" max="50" oninput="setFakeTemp(this)")
+            input(
+              type="range" 
+              name=sensor.name  
+              min="0" 
+              max="50" 
+              oninput="setFakeTemp(this)"
+            )
             
