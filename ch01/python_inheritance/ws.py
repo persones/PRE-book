@@ -2,8 +2,16 @@ import time
 import smbus
 import flask
 
-class Si7021Temp:
+class Sensor:
+  def __init__(self):
+    self.measurement = -999
+
+  def get_read_as_string(self):
+    return('{} {}'.format(self.measurement, self.units))
+
+class Si7021Temp(Sensor):
   def __init__(self, name, bus_id):
+    super().__init__()
     self.name = name
     self.units = 'Celsius'
     self.bus = smbus.SMBus(bus_id)
@@ -17,10 +25,11 @@ class Si7021Temp:
       * 175.72 / 65536.0) - 46.85
     time.sleep(0.1)
 
-class Si7021Humidity:
+class Si7021Humidity(Sensor):
   def __init__(self, name, bus_id):
+    super().__init__()
     self.name = name
-    self.units = "%"
+    self.units = '%'
     self.bus = smbus.SMBus(bus_id)
     
   def measure(self):
@@ -34,8 +43,9 @@ class Si7021Humidity:
     time.sleep(0.1)
 
 
-class MPL3115A2Pressure:
+class MPL3115A2Pressure(Sensor):
   def __init__(self, name, bus_id):
+    super().__init__()
     self.name = name
     self.units = 'kPa'
     self.bus = smbus.SMBus(bus_id)
