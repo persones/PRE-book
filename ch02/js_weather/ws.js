@@ -1,4 +1,18 @@
-const i2c = require('i2c-bus');
+var express = require('express')
+const i2c = require("i2c-bus");
+
+var app = express();
+var sensorList = [];
+
+app.set('view engine', 'pug');
+app.get('/dashboard', (request, response) => {
+  response.render(
+    'dashboard', { sensors: sensorList});
+});
+  
+app.listen(3000, function () {
+  console.log('ready!')
+});
 
 class Sensor {
   constructor(name) {
@@ -49,13 +63,14 @@ class Si7021Temp extends Sensor {
   }
 }
 
-// To test the sensor, we initiallize it, perform the
-// measurement, but... 
-sensor = new Si7021Temp('test_sensor', 1);
-sensor.measure();
-
+sensorList.push(new Si7021Temp('test_sensor', 1));
 // ... we have to wait until we can read it!
-setTimeout(() => {
-  console.log(`${sensor.name}: ${sensor.getReadAsString()}`);
+
+setInterval(() => {
+  for (let s of sensorList) {
+    s.measure();
+  }
 }, 1000);
+
+
 

@@ -40,8 +40,9 @@ Si7021Temp.prototype.measure = function() {
           this.measurement = -999;
           return;
         }
-        this.measurement = (((((data[0] << 8) |
-          data[1]) * 175.72) / 65536) - 46.85);
+        this.measurement = (
+          ((((data[0] << 8) |
+            data[1]) * 175.72) / 65536) - 46.85);
       });
     }, 100);
   });
