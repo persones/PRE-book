@@ -1,15 +1,20 @@
-# Fan configuration
-time: 60
+# Check messages from the last x minutes
+interval: 60
+
+# Alert throttling, in minutes
+throttle: 120
+
+# Alerts types
 alerts:
-- message: Error rate
-  text: ERROR 
-  thrshold: 20
-  playbook: error
-- message: Machine rebooted
-  text: reboots
-  thrshold: 2
-  playbook: reboot
-- message: Critial errors rate
-  text: CRITICAL
-  thrshold: 1
-  playbook: critical
+- string: ERROR 
+  threshold: 20
+  message: Error rate
+  playbook: https://tinyurl.com/pre-playbook1
+- string: CRITICAL
+  threshold: 1
+  message: Critical errors rate
+  playbook: https://tinyurl.com/pre-playbook2
+- string: reboot
+  threshold: 2
+  message: Machine rebooted
+  playbook: https://tinyurl.com/pre-playbook3

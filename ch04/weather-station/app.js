@@ -12,7 +12,7 @@ app.get('/', (request, response) => {
 });
   
 app.listen(3000, function () {
-  console.log('Example app listening on port 3000!')
+  console.log('ready!')
 });
 
 const i2c = require("i2c-bus");
