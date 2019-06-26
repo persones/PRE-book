@@ -3,7 +3,7 @@ const i2c = require('i2c-bus');
 class Sensor {
   constructor(name) {
     this.name = name;
-    this.lastRead = -999;
+    this.measurement = -999;
   }
   
   getReadAsString() {

@@ -3,7 +3,6 @@ var app = express();
 var gpio = require('rpi-gpio');
 gpio.setMode(gpio.MODE_BCM);
 
-
 app.set('view engine', 'pug');
 app.use(express.static('public'))
 app.get('/', (request, response) => {
@@ -12,7 +11,7 @@ app.get('/', (request, response) => {
 });
   
 app.listen(3000, function () {
-  console.log('ready!')
+  console.log('Example app listening on port 3000!')
 });
 
 const i2c = require("i2c-bus");

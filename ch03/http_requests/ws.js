@@ -3,11 +3,14 @@ const i2c = require("i2c-bus");
 
 var app = express();
 var sensorList = [];
+var isMeasuring = true;
 
-app.set('view engine', 'pug');
-app.get('/dashboard', (request, response) => {
-  response.render(
-    'dashboard', { sensors: sensorList});
+app.use(express.static('public'))
+app.get('/status', (request, response) => {
+  response.json({
+    sensors: sensorList,
+    measuring: isMeasuring
+  });	
 });
   
 app.listen(3000, function () {
@@ -40,6 +43,7 @@ class Si7021Temp extends Sensor {
   measure() {
     this.i2cBus.writeByte(0x40, 0xF3, 0, (err) => {      
       if(err) {
+        console.log(err);
         this.measurement = -999;
         return;
       }
@@ -57,6 +61,7 @@ class Si7021Temp extends Sensor {
           this.measurement = (
             ((((data[0] << 8) |
               data[1]) * 175.72) / 65536) - 46.85);
+          console.log(this.measurement);
         });
       }, 100);
     });
@@ -67,8 +72,12 @@ sensorList.push(new Si7021Temp('test_sensor', 1));
 // ... we have to wait until we can read it!
 
 setInterval(() => {
-  for (let s of sensorList) {
-    s.measure();
+  if (isMeasuring) {
+    for (let s of sensorList) {
+      s.measure();
+    }
+  } else {
+    console.log('not measureing');
   }
 }, 1000);
 

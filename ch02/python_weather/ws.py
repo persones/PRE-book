@@ -83,7 +83,6 @@ t.start()
 
 @app.route('/dashboard/')
 def show_dashboard():
-  print('dashboard. is measuring', is_measuring)
   return render_template(
     'dashboard.html', 
     sensor_list=sensor_list,
