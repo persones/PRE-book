@@ -3,7 +3,6 @@ var app = express();
 var gpio = require('rpi-gpio');
 gpio.setMode(gpio.MODE_BCM);
 
-
 app.set('view engine', 'pug');
 app.use(express.static('public'))
 app.get('/', (request, response) => {
@@ -83,8 +82,7 @@ class MPL3115A2Temp extends Sensor {
     this.i2cBus.writeByteSync(0x60, 0x26, 0xB9);
     this.i2cBus.writeByteSync(0x60, 0x13, 0x07);
     this.i2cBus.writeByte(0x60, 0x26, 0xB9, (err) => {
-      setTimeout(() => {
-        let data = new Buffer(6);
+      setTimeout(() =>        let data = new Buffer(6);
         this.i2cBus.i2cReadSync(0x60, 6, data);
         let temp = ((data[4] * 256) + (data[5] & 0xF0)) / 16;
         this.lastRead = (temp / 16.0);
@@ -95,15 +93,15 @@ class MPL3115A2Temp extends Sensor {
 }
 
 class Fan {
-  constructor(name, pinNumber) {
+  constructor(name, pin) {
     this.name = name;
-    this.pinNumber =  pinNumber;
-    gpio.setup(this.pinNumber, gpio.DIR_OUT);
+    this.pin =  pin;
+    gpio.setup(this.pin, gpio.DIR_OUT);
   }
 
-  set(b) {
-    this.state = b;
-    gpio.write(this.pinNumber, this.state);
+  set(state) {
+    this.state = state;
+    gpio.write(this.pin, this.state);
     wss.broadcast(JSON.stringify({
       fans: [this]
     }));
@@ -111,7 +109,6 @@ class Fan {
 }
 
 const WebSocket = require('ws');
- 
 const wss = new WebSocket.Server({
   port: 3001,
 });
